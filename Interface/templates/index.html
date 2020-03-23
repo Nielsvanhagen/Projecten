@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Welcome</title>
+        <style type="text/css">
+            
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: 'Open Sans', Arial, sans-serif;
+                font-weight: 700;
+            }
+            .welcome-section {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background-color: #000;
+                overflow: hidden;
+            }
+            .welcome-section .content-wrap {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate3d(-50%, -50%, 0);
+            }
+            .welcome-section .content-wrap .fly-in-text {
+                list-style: none;
+            }
+            .welcome-section .content-wrap .fly-in-text li {
+                display: inline-block;
+                margin-right: 30px;
+                font-size: 5em;
+                color: #fff;
+                opacity: 1;
+                transition: all 2s ease;
+            }
+            .welcome-section .content-wrap .fly-in-text li:last-child {
+                margin-right: 0;
+            }
+            .welcome-section .content-wrap .enter-button {
+                display: block;
+                text-align: center;
+                font-size: 1em;
+                text-decoration: none;
+                text-transform: uppercase;
+                color: #ffffff;
+                opacity: 1;
+                transition: all 1s ease 2s;
+            }
+            
+            .welcome-section.content-hidden .content-wrap .fly-in-text li { opacity: 0; }
+            .welcome-section.content-hidden .content-wrap .fly-in-text li:nth-child(1) { transform: translate3d(-100px, 0, 0); }
+            .welcome-section.content-hidden .content-wrap .fly-in-text li:nth-child(2) { transform: translate3d(100px, 0, 0); }
+
+            .welcome-section.content-hidden .content-wrap .enter-button { transform: translate3d(0, 350px, 0); }
+            @media (min-width: 800px) {
+                .welcome-section .content-wrap .fly-in-text li { font-size: 10em; }
+                .welcome-section .content-wrap .enter-button { font-size: 1.5em; }
+            }
+            
+            .default-section {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background-color: #001f3f;
+                overflow: hidden;
+            }
+            
+            .top-text {
+                position: relative; 
+                top: 10%;
+                text-align: center;
+                font-size: 4em;
+                text-decoration: none;
+                color: #ffffff;
+                opacity: 1;
+                transition: all 1s ease 2s;
+            }
+
+            .box-image {
+                background-color: rgb(237, 253, 246);
+                width: 400px;
+                height: 500px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);    
+            }
+
+            .hidden_{
+                opacity: 0;
+            }
+            
+            
+        </style>
+    </head>
+    <body>
+        <div class="welcome-section content-hidden">
+            <ul class="top-text">
+                <p id="centerText"></p>
+            </ul>  
+            <ul class="box-image hidden_">
+                
+            </ul> 
+            <div class="content-wrap">
+                <ul class="fly-in-text" class="content-wrap">
+                    <li>H</li>
+                    <li>i</li>
+                </ul>  
+                <a class="enter-button">Adverspying</a>
+            </div>
+        </div>
+        
+        
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            var onetim = false;    
+            var onetim1 = false; 
+            // $(document).ready(function () {
+            
+            // const source = new EventSource("/get-data");
+            // source.onmessage = function (event) {
+            // const data = JSON.parse(event.data);
+
+            // if(!onetim){
+            //     intro();
+            // }
+            // if(!onetim1 && onetim){
+            //     default_layout();
+            //     onetim1 = 1;
+            // }
+            // }
+            
+            // });
+
+
+            intro();
+            var pageSection;
+            var defaultSection = $('.box-image');
+            function intro(){
+                    pageSection = $('.welcome-section');
+                    enterButton = pageSection.find('.enter-button');
+                
+                setTimeout(function() {
+                    pageSection.removeClass('content-hidden');
+                }, 500);
+                
+                setTimeout(function() {
+                    pageSection.addClass('content-hidden');
+                    onetim = 1;
+                }, 5000);
+
+                setTimeout(function() {
+                    default_layout();
+                }, 8000);
+            }
+
+            function default_layout(){
+                    pageSection.addClass('default-section');
+                    var dist = 5;
+                    $(document).ready(function () {
+
+                        const source = new EventSource("/get-data");
+                        source.onmessage = function (event) {
+                        const data = JSON.parse(event.data);
+                        
+                        temperature(data.temperature);
+                        
+                    }
+                    
+            });
+            }
+
+            function temperature(temp){
+                        defaultSection.removeClass('hidden_');
+                        top_text_rewrite("Huidige temperatuur " + Math.round(temp) + "°C");
+            }
+
+
+            function top_text_rewrite(text){
+                        document.getElementById('centerText').innerHTML = text;
+            }
+        </script>
+
+    </body>
+</html>
