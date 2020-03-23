@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script
+    src="https://code.jquery.com/jquery-3.0.0.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport"
+    content="width=device-width">
+    <link rel="icon" href="img/spy.png">
+    <title>Adverspying weather</title>
+</head>
+<body>
+    <input type="text" id="cityName">
+    <button onclick="getWeather();">
+    Enter a city to get weather</button>
+    <br>
+    <img id="myImage" src="">
+    <div class="weatherResponse">
+    </div>
+</body>
+</html>
+
+
+<!-- JavaScript functie om het weer op te vragen -->
+<script>
+    function getWeather(){
+    $('.weatherResponse').html('');
+    var cityName = $('#cityName').val();
+    var apiCall = 'http://api.openweathermap.org/data/2.5/weather?APPID=a62699263199cff6bc9755b6529c08db&q='+cityName;
+    $.getJSON(apiCall, weatherCallback);
+
+    function weatherCallback(weatherData){
+        var cityName = weatherData.name;
+        var country = weatherData.sys.country;
+        var description = weatherData.weather[0].description;
+        var temperature = weatherData.main.temp - 273.15;
+        var humidity = weatherData.main.humidity;
+        var wind = weatherData.wind.speed;
+        var main = weatherData.weather[0].main;
+        var image = document.getElementById("myImage");
+        $('.weatherResponse').append("The weather in "+ cityName + " "+ country+ " is currently "+ description + ", the temperature is "+ temperature + ", the humidity is "+ humidity+"%"+" and the windspeed is "+ wind);
+
+        if(main=="Thunderstorm"){
+            image.src="img/thunderstorm.gif";
+        }
+        else if(main=="Drizzle"){
+            image.src="img/paraplu.gif";
+        }
+        else if(main=="Rain"){
+            image.src="img/paraplu.gif";
+        }
+        else if(main=="Snow"){
+            image.src="img/sneeuwPet.gif";
+        }
+        else if(main=="Clear"){
+            image.src="img/pet.gif";
+        }
+        else if(main=="Clouds"){
+            image.src="img/overcastClouds.gif";
+        }
+    }
+}
+
+function clickEvent(){
+    alert('Hello!');
+}
+</script>
