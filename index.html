@@ -124,7 +124,6 @@
                 background: rgba(255, 255, 255, 0.2);
                 animation: animate 25s linear infinite;
                 bottom: -150px;
-
             }
 
             .circles li:nth-child(1){
@@ -203,6 +202,7 @@
             }
 
             @keyframes animate {
+            
                 0%{
                     transform: translateY(0) rotate(0deg);
                     opacity: 1;
@@ -213,14 +213,13 @@
                     transform: translateY(-1000px) rotate(720deg);
                     opacity: 0;
                     border-radius: 50%;
-                }      
+                }
             }
 
         </style>
     </head>
     <body>
         <div class="welcome-section content-hidden">
-        
             <div class="background">
                 <li></li>
                 <li></li>
@@ -236,8 +235,7 @@
             <ul class="top-text">
                 <p id="centerText"></p>
             </ul>  
-            <ul class="box-image hidden_">
-                
+            <ul class="box-image hidden_">                
             </ul> 
             <div class="content-wrap">
                 <ul class="fly-in-text" class="content-wrap">
@@ -247,10 +245,9 @@
                 <a class="enter-button">Adverspying</a>
             </div>
         </div>
-        
+         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script type="text/javascript">
-
             var onetim = false;    
             var onetim1 = false; 
             intro();
@@ -258,8 +255,8 @@
             var defaultSection = $('.box-image');
             background_ani = $('.background')
             function intro(){
-                    pageSection = $('.welcome-section');
-                    enterButton = pageSection.find('.enter-button');
+                pageSection = $('.welcome-section');
+                enterButton = pageSection.find('.enter-button');
                 
                 setTimeout(function() {
                     pageSection.removeClass('content-hidden');
@@ -278,7 +275,6 @@
             function default_layout(){
                     var dist = 5;
                     $(document).ready(function () {
-
                         const source = new EventSource("/get-data");
                         source.onmessage = function (event) {
                         const data = JSON.parse(event.data);
@@ -295,9 +291,8 @@
                             top_text_rewrite(data.top_text);
                         }
                         else if(data.scene == 3){
-
-                        }
-                    }        
+                        }                        
+                    }                   
             });
             }
             
@@ -309,6 +304,7 @@
             function top_text_rewrite(text){
                         document.getElementById('centerText').innerHTML = text;
             }
+
         </script>
     </body>
 </html>
