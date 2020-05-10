@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Welcome</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+        <link rel= "stylesheet" type= "text/css" href= "../static/styles/mainpage.css">
+        <link rel= "stylesheet" type= "text/css" href= "../static/styles/intro.css">
+    </head>
+    <body>
+        <div class="welcome-section content-hidden">
+            <div class="background">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </div>
+            <ul class="top-text">
+                <p id="centerText"></p>
+            </ul>  
+            <ul class="box-image hidden_">
+                <img id="imgscr" src="{{url_for('static', filename='ICEPNG.png')}}" height="50%">
+                <!-- <img id="image">  -->
+                <!-- <img src="static/ICEPNG.jpg" height="50%"> -->
+            </ul> 
+            <div class="content-wrap">
+                <ul class="fly-in-text" class="content-wrap">
+                    <li>H</li>
+                    <li>i</li>
+                </ul>  
+                <a class="enter-button">Adverspying</a>
+            </div>
+        </div>
+        
+        
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            var onetim = false;    
+            var onetim1 = false; 
+            intro();
+            var pageSection;
+            var defaultSection = $('.box-image');
+            background_ani = $('.background')
+            function intro(){
+                    pageSection = $('.welcome-section');
+                    enterButton = pageSection.find('.enter-button');
+                
+                setTimeout(function() {
+                    pageSection.removeClass('content-hidden');
+                }, 500);
+                
+                setTimeout(function() {
+                    pageSection.addClass('content-hidden');
+                    onetim = 1;
+                }, 5000);
+
+                setTimeout(function() {
+                    default_layout();
+                }, 8000);
+            }
+
+            function default_layout(){
+                    var dist = 5;
+                    $(document).ready(function () {
+
+                        const source = new EventSource("/get-data");
+                        source.onmessage = function (event) {
+                        const data = JSON.parse(event.data);
+                        top_text_rewrite(data.top_text);
+                        pageSection.addClass('default-section');//default selection layout (top text aboves)
+                        background_ani.addClass('area circles'); //add background animation
+                        //scene 1 = persoon detecteerd
+                        if(data.scene == 1){
+                            defaultSection.removeClass('hidden_');  //set white box to visible
+                            document.getElementById("imgscr").src = "{{url_for('static', filename='JONAPNG.png')}}";
+                            top_text_rewrite(data.top_text);
+                        }
+                        //Scene 2 = geluid
+                        else if(data.scene == 2){
+                            defaultSection.removeClass('hidden_');  //set white box to visible
+                            document.getElementById("imgscr").src = "{{url_for('static', filename='HEADPHONEPNG.png')}}";
+                            top_text_rewrite(data.top_text);
+                        }
+                        else if(data.scene == 3){
+                            defaultSection.removeClass('hidden_');  //set white box to visible
+                            document.getElementById("imgscr").src = "{{url_for('static', filename='HEADPHONEPNG.png')}}";
+                            top_text_rewrite(data.top_text);
+                        }
+
+                        //NON sensor ADS
+                        else if(data.scene == 101){
+                            defaultSection.removeClass('hidden_');  //set white box to visible
+                            document.getElementById("imgscr").src = "{{url_for('static', filename='101PNG.png')}}";
+                            top_text_rewrite(data.top_text);
+                        }
+                        else if(data.scene == 102){
+                            defaultSection.removeClass('hidden_');  //set white box to visible
+                            document.getElementById("imgscr").src = "{{url_for('static', filename='102PNG.png')}}";
+                            top_text_rewrite(data.top_text);
+                        }
+                        else if(data.scene == 103){
+                            defaultSection.removeClass('hidden_');  //set white box to visible
+                            document.getElementById("imgscr").src = "{{url_for('static', filename='103PNG.png')}}";
+                            top_text_rewrite(data.top_text);
+                        }
+                        
+                    }
+                    
+            });
+            }
+
+            function fetchImage(imageName){
+                test1 = "JONAPNG.png"
+                test = "{{url_for('static', filename='"+ test1 +"')}}";
+                document.getElementById("imgscr").src = "{{url_for('static', filename="+ test1 +")}}";
+            }
+
+            function temperature(temp){
+                        defaultSection.removeClass('hidden_');
+                        top_text_rewrite("Huidige temperatuur " + Math.round(temp) + "°C");
+            }
+
+
+            function top_text_rewrite(text){
+                        document.getElementById('centerText').innerHTML = text;
+            }
+
+        </script>
+
+    </body>
+</html>
